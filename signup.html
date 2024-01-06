@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="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" content="134574279766-4hef90btnls1t1nc2i8j3cs5ko1kbe8g.apps.googleusercontent.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Form</title>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://connect.facebook.net/en_US/sdk.js"></script>
+    <style>
+        #profile {
+            float: left;
+            margin-right: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="profile"></div>
+<div id="welcomeMessage"></div>
+<button onclick="signInWithGoogle()">Sign up with Google</button>
+<button onclick="signInWithFacebook()">Sign up with Facebook</button>
+
+<script>
+    function onSignIn(googleUser) {
+        var profile = googleUser.getBasicProfile();
+        displayUserProfile(profile.getName(), profile.getEmail(), profile.getImageUrl());
+    }
+
+    function signInWithGoogle() {
+        gapi.auth2.getAuthInstance().signIn().then(onSignIn);
+    }
+
+    function checkLoginState() {
+        FB.getLoginStatus(function (response) {
+            if (response.status === 'connected') {
+                getUserProfile();
+            } else {
+                FB.login(function (loginResponse) {
+                    if (loginResponse.authResponse) {
+                        getUserProfile();
+                    }
+                });
+            }
+        });
+    }
+
+    function getUserProfile() {
+        FB.api('/me', 'GET', { fields: 'name,email,picture' }, function (response) {
+            displayUserProfile(response.name, response.email, response.picture.data.url);
+        });
+    }
+
+    function signInWithFacebook() {
+        FB.getLoginStatus(function (response) {
+            if (response.status === 'connected') {
+                getUserProfile();
+            } else {
+                FB.login(function (loginResponse) {
+                    if (loginResponse.authResponse) {
+                        getUserProfile();
+                    }
+                });
+            }
+        });
+    }
+
+    function displayUserProfile(name, email, picture) {
+        var profileDiv = document.getElementById('profile');
+        profileDiv.innerHTML = '<img src="' + picture + '" alt="Profile Picture" style="width:50px;height:50px;">' +
+            '<p>Name: ' + name + '</p>' +
+            '<p>Email: ' + email + '</p>';
+
+        var welcomeMessageDiv = document.getElementById('welcomeMessage');
+        welcomeMessageDiv.innerHTML = '<p>Welcome, ' + name + '!</p>';
+    }
+</script>
+
+<script>
+    // Initialize the Google API client
+    gapi.load('auth2', function () {
+        gapi.auth2.init({
+            client_id:  '134574279766-4hef90btnls1t1nc2i8j3cs5ko1kbe8g.apps.googleusercontent.com'
+        });
+    });
+
+    // Initialize the Facebook SDK
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: 'YOUR_FACEBOOK_APP_ID',
+            cookie: true,
+            xfbml: true,
+            version: 'v9.0'
+        });
+    };
+
+    // Load the Facebook SDK asynchronously
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = 'https://connect.facebook.net/en_US/sdk.js';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+</body>
+</html>
