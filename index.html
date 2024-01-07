@@ -382,7 +382,7 @@
 							<i class='bx bxs-lock-alt'></i>
 							<input type="email" placeholder="Email">
 						</div>
-						<!-- Add this line inside the "Sign In" form after the button -->
+						 
 <button onclick="redirectToGallery()">
     Sign in
 </button>
@@ -454,7 +454,7 @@ setTimeout(() => {
         // Check if name and email are filled
         if (nameInput.value.trim() !== '' && emailInput.value.trim() !== '') {
             // Redirect to the gallery with the user's name as a query parameter
-            window.location.href = `https://najeebahmad07.github.io/image-gallery/?name=${encodeURIComponent(nameInput.value)}`;
+            window.location.href = `index1.html/?name=${encodeURIComponent(nameInput.value)}`;
         } else {
             // Display an error message or handle accordingly if the inputs are not filled
             alert('Please fill in both name and email.');
